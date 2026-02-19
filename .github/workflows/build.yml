@@ -1,0 +1,29 @@
+name: Update Prayer Times
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python generate_ics.py
+
+      - name: Commit ICS
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add prayer.ics
+          git commit -m "update prayer times" || echo "no changes"
+          git push
