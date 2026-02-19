@@ -5,22 +5,21 @@ from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Europe/Copenhagen")
 
-# Mawaqit ID for Skive (samme som hjemmesiden bruger)
 MOSQUE_ID = "skive"
 
 def get_prayer_times():
     url = f"https://api.mawaqit.net/api/2.0/mosque/{MOSQUE_ID}"
     data = requests.get(url).json()
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    times = data["data"]["times"][today]
+    # Mawaqit giver dagens tider her:
+    times = data["data"]["times"]["today"]
 
     return {
-        "Fajr": times["Fajr"],
-        "Dhuhr": times["Dhuhr"],
-        "Asr": times["Asr"],
-        "Maghrib": times["Maghrib"],
-        "Isha": times["Isha"],
+        "Fajr": times[0],
+        "Dhuhr": times[2],
+        "Asr": times[3],
+        "Maghrib": times[5],
+        "Isha": times[6],
     }
 
 
