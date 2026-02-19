@@ -22,7 +22,6 @@ jobs:
           python-version: "3.11"
 
       - run: pip install -r requirements.txt
-      - run: python -m playwright install --with-deps chromium
       - run: python generate_ics.py
 
       - name: Commit ICS
